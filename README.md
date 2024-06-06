@@ -31,3 +31,16 @@
 - <a href="https://drive.google.com/file/d/15KeHCnwpoSUpHYrSL6eEWOMdNcQ6JJnA/view?usp=sharing "> Диаграмма последовательности (UML Sequence diagram)
 
 - <a href="https://disk.yandex.ru/d/KeL1yVmiBNROPw"> Требования к API (Описание основных методов в Swagger)
+
+  
+### Маркетплэйс по продаже картин и предметов искуства с алгоритмом автоматической оценки SAAGART
+Проект для Хакатон+ Яндекс
+
+- <a href="https://drive.google.com/file/d/1TaFiM04idU3oQT7GGaA_8D1zITS3rADG/view?usp=sharing">  Use case диаграмма + Логическая модель данных
+
+- <a href="https://docs.google.com/document/d/16ppu61WF1SKbdLTk8qiVZ_5H2v67Ju0c_5KyG05Y6qI/edit?usp=sharing"> Use case (табличное описание по Коберну)
+
+- <a href="https://drive.google.com/file/d/1UHWAbJ4RIQEtHL3jk9XoBh8iJejhgM1N/view?usp=sharing"> Диаграмма последовательности (UML Sequence diagram)
+
+- <a href="https://disk.yandex.ru/d/Ra8OEP9s5oACRA"> Требования к API (Описание основных методов в Swagger)
+
