@@ -49,6 +49,7 @@ const modalDateLabelEl = document.getElementById("modalDateLabel");
 const entriesContainerEl = document.getElementById("entriesContainer");
 const dayTotalAlcoholEl = document.getElementById("dayTotalAlcohol");
 const dayTotalCaloriesEl = document.getElementById("dayTotalCalories");
+const toastContainerEl = document.getElementById("toastContainer");
 
 let modalDateISO = null; // YYYY-MM-DD for currently edited day
 
@@ -56,18 +57,24 @@ let modalDateISO = null; // YYYY-MM-DD for currently edited day
 loadFromStorage();
 renderEverything();
 
-document.getElementById("prevMonth").addEventListener("click", () => {
+// Month nav
+const prevBtn = document.getElementById("prevMonth");
+const nextBtn = document.getElementById("nextMonth");
+
+prevBtn.addEventListener("click", () => {
 	const prev = shiftMonth(currentYear, currentMonthIndex, -1);
 	currentYear = prev.year;
 	currentMonthIndex = prev.monthIndex;
 	renderEverything();
+	animateMonthSlide("left");
 });
 
-document.getElementById("nextMonth").addEventListener("click", () => {
+nextBtn.addEventListener("click", () => {
 	const next = shiftMonth(currentYear, currentMonthIndex, 1);
 	currentYear = next.year;
 	currentMonthIndex = next.monthIndex;
 	renderEverything();
+	animateMonthSlide("right");
 });
 
 document.getElementById("addEntryRow").addEventListener("click", () => {
@@ -80,6 +87,7 @@ document.getElementById("clearDay").addEventListener("click", () => {
 	delete dateToEntries[modalDateISO];
 	saveToStorage();
 	closeModal();
+	showToast("День очищен");
 	renderEverything();
 });
 
@@ -88,8 +96,11 @@ document.getElementById("saveDay").addEventListener("click", () => {
 	const collected = collectEntriesFromUI();
 	if (collected.length === 0) {
 		delete dateToEntries[modalDateISO];
+		showToast("Пустая запись не сохранена");
 	} else {
 		dateToEntries[modalDateISO] = collected;
+		showToast("Сохранено");
+		launchConfetti();
 	}
 	saveToStorage();
 	closeModal();
@@ -170,7 +181,7 @@ function renderCalendarGrid() {
 
 		if (!isCurrentMonthDay) {
 			cellEl.classList.add("outside");
-			cellEl.innerHTML = `<div class="day-num muted">&nbsp;</div>`;
+			cellEl.innerHTML = `<div class=\"day-num muted\">&nbsp;</div>`;
 			calendarGridEl.appendChild(cellEl);
 			continue;
 		}
@@ -186,15 +197,15 @@ function renderCalendarGrid() {
 		const { totalAlcoholGrams, totalCalories } = computeTotals(entries);
 
 		const summaryHtml = entries.length > 0
-			? `<div class="summary">${formatGrams(totalAlcoholGrams)} г алкоголя<br>${Math.round(totalCalories)} ккал</div>`
-			: `<div class="summary muted small">Нет записей</div>`;
+			? `<div class=\"summary\">${formatGrams(totalAlcoholGrams)} г алкоголя<br>${Math.round(totalCalories)} ккал</div>`
+			: `<div class=\"summary muted small\">Нет записей</div>`;
 
 		cellEl.innerHTML = `
-			<div class="day-num">${dayNumber}</div>
+			<div class=\"day-num\">${dayNumber}</div>
 			${summaryHtml}
 		`;
 
-		cellEl.addEventListener("click", () => openDayModal(dateObj));
+		cellEl.addEventListener("click", (ev) => handleDayCellClick(ev, dateObj, cellEl));
 		calendarGridEl.appendChild(cellEl);
 	}
 }
@@ -242,12 +253,29 @@ function openDayModal(dateObj) {
 	updateDayTotalsFromUI();
 	dayModalEl.classList.remove("hidden");
 	dayModalEl.setAttribute("aria-hidden", "false");
+	const content = dayModalEl.querySelector(".modal-content");
+	if (content) {
+		content.classList.remove("closing");
+		content.classList.add("pop");
+		content.addEventListener("animationend", () => content.classList.remove("pop"), { once: true });
+	}
 }
 
 function closeModal() {
-	dayModalEl.classList.add("hidden");
-	dayModalEl.setAttribute("aria-hidden", "true");
-	modalDateISO = null;
+	const content = dayModalEl.querySelector(".modal-content");
+	if (content) {
+		content.classList.add("closing");
+		content.addEventListener("animationend", () => {
+			dayModalEl.classList.add("hidden");
+			dayModalEl.setAttribute("aria-hidden", "true");
+			content.classList.remove("closing");
+			modalDateISO = null;
+		}, { once: true });
+	} else {
+		dayModalEl.classList.add("hidden");
+		dayModalEl.setAttribute("aria-hidden", "true");
+		modalDateISO = null;
+	}
 }
 
 /**
@@ -368,4 +396,70 @@ function formatDateHuman(dateObj) {
 
 function formatGrams(value) {
 	return Math.round(value * 10) / 10; // 1 decimal
+}
+
+// --- Enhancements: ripple, month slide, toasts, confetti ---
+
+function handleDayCellClick(ev, dateObj, cellEl) {
+	createRipple(ev, cellEl);
+	openDayModal(dateObj);
+}
+
+function createRipple(ev, el) {
+	const rect = el.getBoundingClientRect();
+	const x = ev.clientX - rect.left;
+	const y = ev.clientY - rect.top;
+	const ripple = document.createElement("span");
+	ripple.className = "ripple";
+	ripple.style.left = `${x}px`;
+	ripple.style.top = `${y}px`;
+	el.appendChild(ripple);
+	setTimeout(() => ripple.remove(), 650);
+}
+
+function animateMonthSlide(direction) {
+	const cls = direction === "left" ? "slide-in-left" : "slide-in-right";
+	calendarGridEl.classList.remove("slide-in-left", "slide-in-right");
+	// Force reflow so animation restarts
+	void calendarGridEl.offsetWidth;
+	calendarGridEl.classList.add(cls);
+	calendarGridEl.addEventListener("animationend", () => {
+		calendarGridEl.classList.remove(cls);
+	}, { once: true });
+}
+
+function showToast(text) {
+	if (!toastContainerEl) return;
+	const t = document.createElement("div");
+	t.className = "toast";
+	t.textContent = text;
+	toastContainerEl.appendChild(t);
+	setTimeout(() => {
+		t.style.transition = "opacity 240ms ease, transform 240ms ease";
+		t.style.opacity = "0";
+		t.style.transform = "translateY(6px)";
+		setTimeout(() => t.remove(), 260);
+	}, 1600);
+}
+
+function launchConfetti() {
+	const colors = ["#F43F5E","#FB923C","#F59E0B","#22C55E","#06B6D4","#6366F1","#A78BFA","#EC4899"];
+	const count = 80;
+	for (let i = 0; i < count; i++) {
+		const piece = document.createElement("div");
+		piece.className = "confetti-piece";
+		piece.style.left = `${Math.random() * 100}vw`;
+		piece.style.background = colors[i % colors.length];
+		piece.style.transform = `translateY(-10px) rotate(0deg)`;
+		document.body.appendChild(piece);
+		const fallDistance = 110 + Math.random() * 20; // vh
+		const drift = (Math.random() - 0.5) * 60; // px
+		const rotate = (Math.random() - 0.5) * 720; // deg
+		const duration = 900 + Math.random() * 900; // ms
+		requestAnimationFrame(() => {
+			piece.style.transition = `transform ${duration}ms cubic-bezier(.3,.7,.1,1)`;
+			piece.style.transform = `translate(${drift}px, ${fallDistance}vh) rotate(${rotate}deg)`;
+		});
+		setTimeout(() => piece.remove(), duration + 200);
+	}
 }

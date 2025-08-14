@@ -8,6 +8,14 @@
 </head>
 <body>
 	<div class="app">
+		<section class="hero">
+			<div class="hero-text">
+				<div class="hero-title">Трекер алкоголя и калорий</div>
+				<div class="hero-subtitle">Календарь потребления, граммы чистого алкоголя и калории — быстро и наглядно</div>
+			</div>
+			<img class="hero-ill" src="./images/drinks-hero.svg" alt="Иллюстрация напитков" />
+		</section>
+
 		<header class="app-header">
 			<div class="month-nav">
 				<button id="prevMonth" class="nav-btn" aria-label="Предыдущий месяц">‹</button>
@@ -57,6 +65,9 @@
 			</aside>
 		</main>
 	</div>
+
+	<!-- Toasts -->
+	<div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
 	<!-- Модалка редактирования дня -->
 	<div id="dayModal" class="modal hidden" aria-hidden="true">

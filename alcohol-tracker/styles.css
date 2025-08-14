@@ -150,3 +150,95 @@ body {
 	.primary-btn, .secondary-btn, .danger-btn { padding: 10px 12px; }
 	.modal-content { max-width: 100%; border-radius: 0; }
 }
+
+/* Modern theme variables and animated background */
+:root {
+	--brand-1: #0ea5e9;
+	--brand-2: #8b5cf6;
+	--brand-3: #f43f5e;
+	--glass-bg: rgba(255, 255, 255, 0.6);
+	--glass-stroke: rgba(255, 255, 255, 0.35);
+	--shadow-1: rgba(2, 6, 23, 0.12);
+}
+
+body { position: relative; }
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	background: radial-gradient(60% 80% at 10% 10%, rgba(14,165,233,0.25), transparent),
+		radial-gradient(60% 80% at 90% 10%, rgba(139,92,246,0.25), transparent),
+		radial-gradient(60% 80% at 50% 100%, rgba(244,63,94,0.22), transparent),
+		linear-gradient(120deg, #0ea5e9, #8b5cf6, #f43f5e);
+	background-size: 180% 180%;
+	animation: bgShift 18s ease-in-out infinite;
+	filter: saturate(110%);
+}
+@keyframes bgShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+.app, .modal { position: relative; z-index: 1; }
+
+/* Hero */
+.hero {
+	display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px;
+	padding: 16px; border-radius: 16px;
+	background: rgba(255,255,255,0.5);
+	backdrop-filter: blur(8px) saturate(160%);
+	border: 1px solid var(--glass-stroke);
+	box-shadow: 0 10px 24px var(--shadow-1);
+	margin-bottom: 12px;
+}
+.hero-title { font-size: 22px; font-weight: 800; letter-spacing: 0.2px; }
+.hero-subtitle { color: #334155; font-size: 14px; }
+.hero-ill { width: 72px; height: 72px; animation: floatY 6s ease-in-out infinite; filter: drop-shadow(0 10px 18px rgba(2,6,23,0.25)); }
+@keyframes floatY { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+
+/* Glass containers */
+.calendar-section, .stats-section, .modal-content {
+	background: var(--glass-bg);
+	border-color: var(--glass-stroke);
+	box-shadow: 0 10px 26px var(--shadow-1);
+}
+
+/* Subtle interactivity */
+.nav-btn { transition: transform 0.15s ease, background 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 1px 2px rgba(2,6,23,0.08); }
+.nav-btn:hover { transform: translateY(-1px); }
+
+.day-cell { transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.3s ease; }
+.day-cell:active { transform: translateY(1px) scale(0.995); }
+.day-cell.today { box-shadow: 0 0 0 2px #38bdf8, 0 8px 26px rgba(56,189,248,0.35); }
+
+/* Ripple effect */
+.day-cell .ripple { position: absolute; left: 0; top: 0; width: 10px; height: 10px; border-radius: 9999px; pointer-events: none; background: rgba(255,255,255,0.6); transform: translate(-50%, -50%); animation: ripple 600ms ease-out forwards; }
+@keyframes ripple { from { width: 0; height: 0; opacity: 0.7; } to { width: 240px; height: 240px; opacity: 0; } }
+
+/* Calendar slide-in on month change */
+.calendar-grid { position: relative; }
+.calendar-grid.slide-in-left { animation: slideInLeft 360ms cubic-bezier(.2,.8,.2,1) both; }
+.calendar-grid.slide-in-right { animation: slideInRight 360ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+
+/* Modal pop animations */
+.modal-content.pop { animation: popIn 320ms cubic-bezier(.2,.8,.2,1) both; }
+.modal-content.closing { animation: popOut 240ms cubic-bezier(.2,.7,.2,1) both; }
+@keyframes popIn { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes popOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px) scale(0.98); } }
+
+/* Toasts */
+.toast-container { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); display: grid; gap: 8px; z-index: 10000; }
+.toast { background: rgba(15,23,42,0.94); color: #fff; border-radius: 12px; padding: 10px 14px; box-shadow: 0 12px 24px rgba(2,6,23,0.35); animation: toastIn 280ms ease both; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Confetti */
+.confetti-piece { position: fixed; top: -10px; width: 8px; height: 14px; opacity: 0.95; border-radius: 2px; will-change: transform, opacity; z-index: 9999; }
+
+/* Mobile tweaks for hero */
+@media (max-width: 480px) {
+	.hero { grid-template-columns: 1fr; text-align: left; }
+	.hero-ill { display: none; }
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#0EA5E9"/>
+			<stop offset="1" stop-color="#8B5CF6"/>
+		</linearGradient>
+		<linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#F59E0B"/>
+			<stop offset="1" stop-color="#F43F5E"/>
+		</linearGradient>
+		<linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#22C55E"/>
+			<stop offset="1" stop-color="#06B6D4"/>
+		</linearGradient>
+		<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+			<feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="rgba(2,6,23,0.25)"/>
+		</filter>
+	</defs>
+	<rect x="0" y="0" width="256" height="256" rx="24" fill="url(#g1)" opacity="0.1"/>
+	<!-- Beer glass -->
+	<g filter="url(#shadow)">
+		<rect x="28" y="84" width="56" height="92" rx="10" fill="url(#g2)"/>
+		<rect x="34" y="90" width="44" height="18" rx="9" fill="#FFFFFF" opacity="0.8"/>
+		<rect x="34" y="112" width="44" height="54" rx="6" fill="#FDE68A" opacity="0.9"/>
+	</g>
+	<!-- Wine glass -->
+	<g filter="url(#shadow)">
+		<path d="M128 74c18 0 32 14 32 32 0 22-15 35-32 38-17-3-32-16-32-38 0-18 14-32 32-32z" fill="url(#g3)"/>
+		<rect x="123" y="146" width="10" height="36" rx="5" fill="#94A3B8"/>
+		<rect x="108" y="182" width="40" height="8" rx="4" fill="#CBD5E1"/>
+	</g>
+	<!-- Cocktail -->
+	<g filter="url(#shadow)">
+		<rect x="184" y="86" width="44" height="74" rx="8" fill="#06B6D4" opacity="0.9"/>
+		<rect x="184" y="160" width="44" height="10" rx="5" fill="#0EA5E9" opacity="0.9"/>
+		<circle cx="206" cy="78" r="10" fill="#F43F5E"/>
+	</g>
+</svg>
