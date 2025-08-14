@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Трекер алкоголя и калорий</title>
+	<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+	<div class="app">
+		<header class="app-header">
+			<div class="month-nav">
+				<button id="prevMonth" class="nav-btn" aria-label="Предыдущий месяц">‹</button>
+				<div id="monthLabel" class="month-label">Месяц Год</div>
+				<button id="nextMonth" class="nav-btn" aria-label="Следующий месяц">›</button>
+			</div>
+		</header>
+
+		<main class="main">
+			<section class="calendar-section">
+				<div class="weekday-row">
+					<div>Пн</div>
+					<div>Вт</div>
+					<div>Ср</div>
+					<div>Чт</div>
+					<div>Пт</div>
+					<div class="weekend">Сб</div>
+					<div class="weekend">Вс</div>
+				</div>
+				<div id="calendarGrid" class="calendar-grid"></div>
+			</section>
+
+			<aside class="stats-section">
+				<h2>Статистика</h2>
+				<div class="stats-block">
+					<div class="stat-row">
+						<div class="stat-name">Период</div>
+						<div id="statsPeriod" class="stat-value">—</div>
+					</div>
+					<div class="stat-row">
+						<div class="stat-name">Алкоголь (г), всего</div>
+						<div id="statsTotalAlcohol" class="stat-value">0</div>
+					</div>
+					<div class="stat-row">
+						<div class="stat-name">Калории (ккал), всего</div>
+						<div id="statsTotalCalories" class="stat-value">0</div>
+					</div>
+					<div class="stat-row">
+						<div class="stat-name">Среднее ккал/день (все дни)</div>
+						<div id="statsAvgPerCalendarDay" class="stat-value">0</div>
+					</div>
+					<div class="stat-row">
+						<div class="stat-name">Среднее ккал/день (дни с записями)</div>
+						<div id="statsAvgPerDrinkingDay" class="stat-value">0</div>
+					</div>
+				</div>
+			</aside>
+		</main>
+	</div>
+
+	<!-- Модалка редактирования дня -->
+	<div id="dayModal" class="modal hidden" aria-hidden="true">
+		<div class="modal-backdrop" data-close="true"></div>
+		<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle">
+			<div class="modal-header">
+				<h3 id="dayModalTitle">Запись за день</h3>
+				<button class="icon-btn" id="closeModal" aria-label="Закрыть">✕</button>
+			</div>
+			<div class="modal-body">
+				<div class="day-label" id="modalDateLabel">—</div>
+
+				<div class="entries-controls">
+					<button id="addEntryRow" class="primary-btn">Добавить напиток</button>
+					<button id="clearDay" class="danger-btn">Очистить день</button>
+				</div>
+
+				<div id="entriesContainer" class="entries-container"></div>
+
+				<div class="totals">
+					<div class="total-row">
+						<div class="total-name">Итого алкоголь</div>
+						<div id="dayTotalAlcohol" class="total-value">0 г</div>
+					</div>
+					<div class="total-row">
+						<div class="total-name">Итого калории</div>
+						<div id="dayTotalCalories" class="total-value">0 ккал</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="saveDay" class="primary-btn">Сохранить</button>
+				<button id="cancelModal" class="secondary-btn">Отмена</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="./app.js"></script>
+</body>
+</html>
