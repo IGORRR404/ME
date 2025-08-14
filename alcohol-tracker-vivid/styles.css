@@ -114,6 +114,12 @@ body { margin: 0; font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-s
 /* Confetti */
 .confetti-piece { position: fixed; top: -10px; width: 8px; height: 14px; opacity: 0.95; border-radius: 2px; will-change: transform, opacity; z-index: 9999; }
 
+/* Interaction safety: keep modal above, effects not blocking */
+.modal { z-index: 2000; }
+.modal-content { z-index: 2001; }
+.toast-container { pointer-events: none; }
+.confetti-piece { pointer-events: none; }
+
 /* Mobile */
 @media (max-width: 480px) {
 	.app { padding: 10px; }

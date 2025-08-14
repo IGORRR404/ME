@@ -242,3 +242,9 @@ body::before {
 	.hero { grid-template-columns: 1fr; text-align: left; }
 	.hero-ill { display: none; }
 }
+
+/* Interaction safety: keep modal above, effects not blocking */
+.modal { z-index: 2000; }
+.modal-content { z-index: 2001; }
+.toast-container { pointer-events: none; }
+.confetti-piece { pointer-events: none; }
